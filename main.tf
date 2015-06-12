@@ -29,8 +29,28 @@ resource "aws_security_group_rule" "inbound-ssh" {
     security_group_id = "${aws_security_group.composable.id}"
 }
 
+resource "aws_security_group_rule" "inbound-docker" {
+    type = "ingress"
+    from_port = 2375
+    to_port = 2375
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    security_group_id = "${aws_security_group.composable.id}"
+}
+
 resource "aws_security_group_rule" "inbound-http" {
     type = "ingress"
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    security_group_id = "${aws_security_group.composable.id}"
+}
+
+resource "aws_security_group_rule" "outbound-http" {
+    type = "egress"
     from_port = 80
     to_port = 80
     protocol = "tcp"
@@ -43,6 +63,26 @@ resource "aws_security_group_rule" "inbound-https" {
     type = "ingress"
     from_port = 443
     to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    security_group_id = "${aws_security_group.composable.id}"
+}
+
+resource "aws_security_group_rule" "outbound-https" {
+    type = "egress"
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    security_group_id = "${aws_security_group.composable.id}"
+}
+
+resource "aws_security_group_rule" "allow-all-outbound" {
+    type = "egress"
+    from_port = 0
+    to_port = 65535
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
 
