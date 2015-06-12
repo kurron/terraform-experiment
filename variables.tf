@@ -5,7 +5,7 @@ variable "key_name" {
 
 variable "security_group" {
     description = "Name of the security group to use."
-    default = "inbound"
+    default = "Container Service"
 }
 
 variable "key_path" {
@@ -18,9 +18,9 @@ variable "aws_region" {
     default = "us-west-2"
 }
 
-# Ubuntu Server 14.04 LTS (HVM), SSD Volume Type (x64)
+# Ubuntu Server 14.04 LTS (PV), SSD Volume Type, 64-bit 
 variable "aws_amis" {
     default = {
-        us-west-2 = "ami-5189a661"
+        us-west-2 = "ami-6989a659"
     }
 }
