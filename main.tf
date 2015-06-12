@@ -8,6 +8,48 @@ provider "aws" {
     max_retries = 10
 }
 
+resource "aws_security_group" "inbound-ssh" {
+    name = "inbound-ssh"
+    description = "SSH in, nothing out"
+
+    ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here 
+}
+
+resource "aws_security_group" "insecure-http" {
+    name = "insecure-http"
+    description = "HTTP in, nothing out"
+    
+    ingress {
+        from_port = 80 
+        to_port = 80
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+  
+    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
+} 
+
+resource "aws_security_group" "secure-http" {
+    name = "secure-http"
+    description = "HTTPS in, nothing out"
+   
+    ingress {
+        from_port = 443
+        to_port = 443
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+ 
+    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
+}
+
 resource "aws_instance" "docker" {
   connection {
     # The default username for our AMI
@@ -28,7 +70,7 @@ resource "aws_instance" "docker" {
 
   instance_type = "t1.micro"
   key_name = "${var.key_name}"
-  security_groups = ["${var.security_group}"]
+  security_groups = ["${aws_security_group.inbound-ssh.name}"]
 
 # vpc_security_group_ids = []
 # subnet_id = "optional" 
