@@ -62,6 +62,47 @@ resource "aws_security_group" "inbound-secure-http" {
     # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
 }
 
+resource "aws_security_group" "composable" {
+    name = "composable"
+    description = "An experiment to see if I can reuse rules"
+
+    tags {
+        direction = "bi-dierectional"
+        reason = "application"
+    }
+    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
+}
+
+resource "aws_security_group_rule" "inbound-ssh" {
+    type = "ingress"
+    from_port = 22
+    to_port = 22
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    security_group_id = "${aws_security_group.composable.id}"
+}
+
+resource "aws_security_group_rule" "inbound-http" {
+    type = "ingress"
+    from_port = 80
+    to_port = 80
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    security_group_id = "${aws_security_group.composable.id}"
+}
+
+resource "aws_security_group_rule" "inbound-https" {
+    type = "ingress"
+    from_port = 443
+    to_port = 443
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+
+    security_group_id = "${aws_security_group.composable.id}"
+}
+
 resource "aws_instance" "docker" {
   connection {
     # The default username for our AMI
