@@ -2,4 +2,4 @@
 - name: Install Docker Infrastructure 
   hosts: all 
   tasks:
-      - hostname: name=kal-el
+      - hostname: name=ron-el

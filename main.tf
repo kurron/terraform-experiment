@@ -82,4 +82,8 @@ resource "aws_instance" "docker" {
 #   ebs_block_device = "optional" 
 #   ephemeral_block_device = "optional" 
 
+    # run Ansible to provision the box
+    provisioner "local-exec" {
+        command = "echo aws-instance ${aws_instance.docker.public_ip} > hosts.ini ;  ansible-playbook --verbose --inventory hosts.ini playbook.yml"
+    }
 }
