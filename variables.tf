@@ -21,6 +21,8 @@ variable "aws_region" {
 # Ubuntu Server 14.04 LTS (PV), SSD Volume Type, 64-bit 
 variable "aws_amis" {
     default = {
+        us-east-1 = "ami-6989a659"
+        us-west-1 = "ami-6989a659"
         us-west-2 = "ami-6989a659"
     }
 }
