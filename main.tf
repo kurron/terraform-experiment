@@ -1,5 +1,5 @@
 provider "docker" {
-    host = "tcp://127.0.0.1:4243/"
+    host = "tcp://127.0.0.1:2375/"
 }
 
 resource "docker_image" "data-image" {
