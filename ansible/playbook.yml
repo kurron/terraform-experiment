@@ -1,0 +1,5 @@
+---
+- name: Install Docker Infrastructure 
+  hosts: all-cache 
+  tasks:
+      - hostname: name=docker
