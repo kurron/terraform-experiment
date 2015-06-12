@@ -84,6 +84,6 @@ resource "aws_instance" "docker" {
 
     # run Ansible to provision the box
     provisioner "local-exec" {
-        command = "echo aws-instance ${aws_instance.docker.public_ip} > hosts.ini ;  ansible-playbook --verbose --inventory hosts.ini playbook.yml"
+        command = "echo aws-instance ansible_ssh_host=${aws_instance.docker.public_ip} > hosts.ini ;  ansible-playbook --verbose --inventory hosts.ini playbook.yml"
     }
 }
