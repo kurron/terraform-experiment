@@ -20,7 +20,7 @@ output "private_ip" {
 }
 
 output "public_dns" {
-  value = "${aws_instance.docker.publid_dns}"
+  value = "${aws_instance.docker.public_dns}"
 }
 
 output "public_ip" {
