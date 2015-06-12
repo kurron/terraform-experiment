@@ -19,11 +19,15 @@ resource "aws_security_group" "inbound-ssh" {
         cidr_blocks = ["0.0.0.0/0"]
     }
 
+    tags {
+        direction = "inbound"
+        reason = "provisioning"
+    }
     # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here 
 }
 
-resource "aws_security_group" "insecure-http" {
-    name = "insecure-http"
+resource "aws_security_group" "inbound-insecure-http" {
+    name = "inbound-insecure-http"
     description = "HTTP in, nothing out"
     
     ingress {
@@ -33,11 +37,15 @@ resource "aws_security_group" "insecure-http" {
         cidr_blocks = ["0.0.0.0/0"]
     }
   
+    tags {
+        direction = "inbound"
+        reason = "application"
+    }
     # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
 } 
 
-resource "aws_security_group" "secure-http" {
-    name = "secure-http"
+resource "aws_security_group" "inbound-secure-http" {
+    name = "inbound-secure-http"
     description = "HTTPS in, nothing out"
    
     ingress {
@@ -47,6 +55,10 @@ resource "aws_security_group" "secure-http" {
         cidr_blocks = ["0.0.0.0/0"]
     }
  
+    tags {
+        direction = "inbound"
+        reason = "application"
+    }
     # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
 }
 
@@ -70,7 +82,9 @@ resource "aws_instance" "docker" {
 
   instance_type = "t1.micro"
   key_name = "${var.key_name}"
-  security_groups = ["${aws_security_group.inbound-ssh.name}"]
+  security_groups = ["${aws_security_group.inbound-ssh.name}",
+                     "${aws_security_group.inbound-insecure-http.name}",
+                     "${aws_security_group.inbound-secure-http.name}"]
 
 # vpc_security_group_ids = []
 # subnet_id = "optional" 
