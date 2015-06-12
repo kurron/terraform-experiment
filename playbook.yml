@@ -1,5 +1,5 @@
 ---
-- name: Install Docker Infrastructure 
+- name: Set Up AWS Instance 
   hosts: aws-instance 
   tasks:
       - hostname: name=kal-el
@@ -21,4 +21,15 @@
       - command: update-grub
       - service: name=docker state=restarted
       - pip: name=docker-compose extra_args='--upgrade'
+
+      - name: nginx
+        docker:
+            name: nginx
+            hostname: nginx
+            image: nginx 
+            state: started
+            restart_policy: always
+            pull: always
+            ports:
+            - "80:80"
 
