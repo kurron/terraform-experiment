@@ -8,69 +8,15 @@ provider "aws" {
     max_retries = 10
 }
 
-resource "aws_security_group" "inbound-ssh" {
-    name = "inbound-ssh"
-    description = "SSH in, nothing out"
-
-    ingress {
-        from_port = 22
-        to_port = 22
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags {
-        direction = "inbound"
-        reason = "provisioning"
-    }
-    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here 
-}
-
-resource "aws_security_group" "inbound-insecure-http" {
-    name = "inbound-insecure-http"
-    description = "HTTP in, nothing out"
-    
-    ingress {
-        from_port = 80 
-        to_port = 80
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-  
-    tags {
-        direction = "inbound"
-        reason = "application"
-    }
-    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
-} 
-
-resource "aws_security_group" "inbound-secure-http" {
-    name = "inbound-secure-http"
-    description = "HTTPS in, nothing out"
-   
-    ingress {
-        from_port = 443
-        to_port = 443
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
- 
-    tags {
-        direction = "inbound"
-        reason = "application"
-    }
-    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
-}
-
 resource "aws_security_group" "composable" {
     name = "composable"
-    description = "An experiment to see if I can reuse rules"
+    description = "Firewall rules to allow provisioning and application deployment"
 
     tags {
         direction = "bi-dierectional"
-        reason = "application"
+        need = "application"
+        created-by = "Terraform"
     }
-    # Terraform, by default, removes the ALLOW_ALL rule so we don't have to specify it here
 }
 
 resource "aws_security_group_rule" "inbound-ssh" {
@@ -104,43 +50,36 @@ resource "aws_security_group_rule" "inbound-https" {
 }
 
 resource "aws_instance" "docker" {
-  connection {
-    # The default username for our AMI
-    user = "ubuntu"
+    connection {
+        user = "ubuntu"
+        key_file = "${var.key_path}"
+    }
 
-    # The path to your keyfile
-    key_file = "${var.key_path}"
-  }
+    ami = "${lookup(var.aws_amis, var.aws_region)}"
 
-  # Lookup the correct AMI based on the region
-  # we specified
-  ami = "${lookup(var.aws_amis, var.aws_region)}"
+#   availability_zone = "optional"
+#   placement_group = "optional"
+#   ebs_optimized = true 
+#   disable_api_termination = false 
 
-# availability_zone = "optional"
-# placement_group = "optional"
-# ebs_optimized = true 
-# disable_api_termination = false 
+    instance_type = "t1.micro"
+    key_name = "${var.key_name}"
+    security_groups = ["${aws_security_group.composable.name}"]
 
-  instance_type = "t1.micro"
-  key_name = "${var.key_name}"
-  security_groups = ["${aws_security_group.inbound-ssh.name}",
-                     "${aws_security_group.inbound-insecure-http.name}",
-                     "${aws_security_group.inbound-secure-http.name}"]
-
-# vpc_security_group_ids = []
-# subnet_id = "optional" 
-# associate_public_ip_address = true 
-# private_ip = "192.168.1.2" 
-# source_dest_check = true 
-# user_data = "optional" 
-# iam_instance_profile = "optional" 
-  tags {
-      realm = "experimental"
-      purpose = "docker-container"
-      created-by = "Terraform"
-  }
-# root_block_device = "optional" 
-# ebs_block_device = "optional" 
-# ephemeral_block_device = "optional" 
+#   vpc_security_group_ids = []
+#   subnet_id = "optional" 
+#   associate_public_ip_address = true 
+#   private_ip = "192.168.1.2" 
+#   source_dest_check = true 
+#   user_data = "optional" 
+#   iam_instance_profile = "optional" 
+    tags {
+        realm = "experimental"
+        purpose = "docker-container"
+        created-by = "Terraform"
+    }
+#   root_block_device = "optional" 
+#   ebs_block_device = "optional" 
+#   ephemeral_block_device = "optional" 
 
 }
