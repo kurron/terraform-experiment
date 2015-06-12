@@ -1,34 +1,45 @@
-provider "docker" {
-    host = "tcp://127.0.0.1:2375/"
+# Specify the provider and access details
+provider "aws" {
+    # we'll source it from AWS_ACCESS_KEY_ID in the environment
+#   access_key = "${var.aws_access_key}"
+    # we'll source it from AWS_SECRET_ACCESS_KEY in the environment
+#   secret_key = "${var.aws_secret_key}"
+    region = "${var.aws_region}"
+    max_retries = 10
 }
 
-resource "docker_image" "data-image" {
-    name = "busybox:latest"
-    keep_updated = true
-}
+resource "aws_instance" "docker" {
+  connection {
+    # The default username for our AMI
+    user = "ubuntu"
 
-resource "docker_container" "data-container" {
-    image = "${docker_image.data-image.latest}"
-    name = "data-container"
-#   command = "list of strings"
-    dns = ["8.8.8.8", "8.8.4.4"] 
-    env = ["A=a", "B=b"] 
-#   links = "set of strings"
-    hostname = "data-container"
-    domainname = "kurron.org"
-    must_run = false 
-    ports = {
-        internal = 80
-        external = 8080
-#       ip = "192.168.1/24"
-#       protocol = "tcp"
-    }
-    publish_all_ports = false 
-#   volumes = {
-#       from_container = "The container where the volume is coming from"
-#       container_path = "The path in the container where the volume will be mounted"
-#       host_path = "The path on the host where the volume is coming from"
-#       read_only = true 
-#   } 
-}
+    # The path to your keyfile
+    key_file = "${var.key_path}"
+  }
 
+  # Lookup the correct AMI based on the region
+  # we specified
+  ami = "${lookup(var.aws_amis, var.aws_region)}"
+
+# availability_zone = "optional"
+# placement_group = "optional"
+# ebs_optimized = true 
+# disable_api_termination = false 
+
+  instance_type = "t1.micro"
+  key_name = "${var.key_name}"
+  security_groups = ["${var.security_group}"]
+
+# vpc_security_group_ids = []
+# subnet_id = "optional" 
+# associate_public_ip_address = true 
+# private_ip = "192.168.1.2" 
+# source_dest_check = true 
+# user_data = "optional" 
+# iam_instance_profile = "optional" 
+# tags = "optional" 
+# root_block_device = "optional" 
+# ebs_block_device = "optional" 
+# ephemeral_block_device = "optional" 
+
+}
