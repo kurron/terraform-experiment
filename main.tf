@@ -37,7 +37,11 @@ resource "aws_instance" "docker" {
 # source_dest_check = true 
 # user_data = "optional" 
 # iam_instance_profile = "optional" 
-# tags = "optional" 
+  tags {
+      realm = "experimental"
+      purpose = "docker-container"
+      created-by = "Terraform"
+  }
 # root_block_device = "optional" 
 # ebs_block_device = "optional" 
 # ephemeral_block_device = "optional" 
