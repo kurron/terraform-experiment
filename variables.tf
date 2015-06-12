@@ -3,11 +3,6 @@ variable "key_name" {
     default = "aws-linux"
 }
 
-variable "security_group" {
-    description = "Name of the security group to use."
-    default = "Container Service"
-}
-
 variable "key_path" {
     description = "Path to the private portion of the SSH key specified."
     default = "/home/vagrant/aws/aws-linux.pem"

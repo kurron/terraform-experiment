@@ -2,4 +2,4 @@
 - name: Install Docker Infrastructure 
   hosts: aws-instance 
   tasks:
-      - hostname: name=ron-el
+      - hostname: name=kal-el
