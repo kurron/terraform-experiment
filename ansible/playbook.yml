@@ -1,5 +1,5 @@
 ---
 - name: Install Docker Infrastructure 
-  hosts: all-cache 
+  hosts: all 
   tasks:
-      - hostname: name=docker
+      - hostname: name=kal-el
