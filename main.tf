@@ -111,7 +111,7 @@ resource "aws_instance" "docker" {
 
 resource "aws_elb" "load-balancer" {
     name = "load-balancer"
-#   availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c"]
+    availability_zones = ["${lookup(var.elb_zones, var.aws_region)}"]
 
     listener {
         instance_port = 80
