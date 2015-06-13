@@ -13,9 +13,10 @@ resource "aws_security_group" "composable" {
     description = "Firewall rules to allow provisioning and application deployment"
 
     tags {
-        direction = "bi-dierectional"
-        need = "application"
+        realm = "experimental"
         created-by = "Terraform"
+        direction = "bi-dierectional"
+        purpose = "application"
     }
 }
 
@@ -82,7 +83,7 @@ resource "aws_instance" "docker" {
 #   ebs_optimized = true 
 #   disable_api_termination = false 
 
-    instance_type = "t1.micro"
+    instance_type = "${var.instance_type}"
     key_name = "${var.key_name}"
     security_groups = ["${aws_security_group.composable.name}"]
 

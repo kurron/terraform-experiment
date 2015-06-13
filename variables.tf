@@ -13,11 +13,16 @@ variable "aws_region" {
     default = "us-west-2"
 }
 
-# Ubuntu Server 14.04 LTS (PV), SSD Volume Type, 64-bit 
+variable "instance_type" {
+    description = "AWS EC2 instance type."
+    default = "t2.micro"
+}
+
+# Ubuntu Server 14.04 LTS (HVM), SSD Volume Type, 64-bit 
 variable "aws_amis" {
     default = {
-        us-east-1 = "ami-6989a659"
-        us-west-1 = "ami-6989a659"
-        us-west-2 = "ami-6989a659"
+        us-east-1 = "ami-5189a661"
+        us-west-1 = "ami-5189a661"
+        us-west-2 = "ami-5189a661"
     }
 }
