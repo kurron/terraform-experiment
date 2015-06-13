@@ -105,7 +105,7 @@ resource "aws_instance" "docker" {
 
     # run Ansible to provision the box
     provisioner "local-exec" {
-        command = "./provision-instance.sh ${aws_instance.docker.public_ip}"
+        command = "./provision-instance.sh ${aws_instance.docker.public_ip} ${lookup(var.key_path, var.aws_region)}"
     }
 }
 
