@@ -1,6 +1,10 @@
 variable "key_name" {
     description = "Name of the SSH keypair to use in AWS."
-    default = "aws-linux"
+    default = {
+        us-east-1 = "us-east-1"
+        us-west-1 = "do-not-have-one-yet"
+        us-west-2 = "aws-linux"
+    }
 }
 
 variable "key_path" {

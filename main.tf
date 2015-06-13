@@ -84,7 +84,7 @@ resource "aws_instance" "docker" {
 #   disable_api_termination = false 
 
     instance_type = "${var.instance_type}"
-    key_name = "${var.key_name}"
+    key_name = "${lookup(var.key_name, var.aws_region)}"
     security_groups = ["${aws_security_group.composable.name}"]
 
 #   vpc_security_group_ids = []
