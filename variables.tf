@@ -1,6 +1,6 @@
 variable "aws_region" {
     description = "AWS region to launch servers."
-    default = "ap-northeast-1"
+    default = "ap-southeast-2"
 }
 
 variable "instance_type" {
@@ -18,6 +18,7 @@ variable "key_name" {
         eu-central-1   = "eu-central-1"
         sa-east-1      = "sa-east-1"
         ap-southeast-1 = "ap-southeast-1"
+        ap-southeast-2 = "ap-southeast-2"
         ap-northeast-1 = "ap-northeast-1"
     }
 }
@@ -32,6 +33,7 @@ variable "key_path" {
         eu-central-1   = "/home/vagrant/aws/eu-central-1.pem"
         sa-east-1      = "/home/vagrant/aws/sa-east-1.pem"
         ap-southeast-1 = "/home/vagrant/aws/ap-southeast-1.pem"
+        ap-southeast-2 = "/home/vagrant/aws/ap-southeast-2.pem"
         ap-northeast-1 = "/home/vagrant/aws/ap-northeast-1.pem"
     }
 }
@@ -47,6 +49,7 @@ variable "aws_amis" {
         eu-central-1   = "ami-accff2b1"
         sa-east-1      = "ami-4d883350"
         ap-southeast-1 = "ami-96f1c1c4"
+        ap-southeast-2 = "ami-69631053"
         ap-northeast-1 = "ami-936d9d93"
     }
 }
