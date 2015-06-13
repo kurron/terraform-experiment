@@ -9,7 +9,11 @@ variable "key_name" {
 
 variable "key_path" {
     description = "Path to the private portion of the SSH key specified."
-    default = "/home/vagrant/aws/aws-linux.pem"
+    default = {
+        us-east-1 = "/home/vagrant/aws/us-east-1.pem"
+        us-west-1 = "do-not-have-one-yet"
+        us-west-2 = "/home/vagrant/aws/aws-linux.pem"
+    }
 }
 
 variable "aws_region" {

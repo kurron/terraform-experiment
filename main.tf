@@ -73,7 +73,7 @@ resource "aws_security_group_rule" "allow-all-outbound" {
 resource "aws_instance" "docker" {
     connection {
         user = "ubuntu"
-        key_file = "${var.key_path}"
+        key_file = "${lookup(var.key_path, var.aws_region)}"
     }
 
     ami = "${lookup(var.aws_amis, var.aws_region)}"
