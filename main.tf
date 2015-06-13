@@ -111,7 +111,7 @@ resource "aws_instance" "docker" {
 
 resource "aws_elb" "load-balancer" {
     name = "load-balancer"
-    subnets = ["${aws_instance.docker.subnet_id}"] 
+    availability_zones = ["${aws_instance.docker.availability_zone}"] 
 
     listener {
         instance_port = 80
@@ -126,6 +126,11 @@ resource "aws_elb" "load-balancer" {
         timeout = 3
         target = "HTTP:80/"
         interval = 30
+    }
+
+    tags {
+        realm = "experimental"
+        created-by = "Terraform"
     }
 
     instances = ["${aws_instance.docker.id}"]
