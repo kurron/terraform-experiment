@@ -103,3 +103,12 @@ output "sqs_arn" {
   value = "${aws_sqs_queue.example_queue.arn}"
 }
 
+output "sns_id" {
+  value = "${aws_sns_topic.example_topic.id}"
+}
+
+
+output "sns_arn" {
+  value = "${aws_sns_topic.example_topic.arn}"
+}
+

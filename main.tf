@@ -27,6 +27,10 @@ resource "aws_sqs_queue" "example_queue" {
     name = "example-queue"
 }
 
+resource "aws_sns_topic" "example_topic" {
+    name = "example-topic"
+}
+
 resource "aws_security_group" "composable" {
     name = "composable"
     description = "Firewall rules to allow provisioning and application deployment"
