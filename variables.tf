@@ -1,6 +1,6 @@
 variable "aws_region" {
     description = "AWS region to launch servers."
-    default = "us-west-1"
+    default = "us-west-2"
 }
 
 variable "instance_type" {
@@ -13,7 +13,7 @@ variable "key_name" {
     default = {
         us-east-1 = "us-east-1"
         us-west-1 = "us-west-1"
-        us-west-2 = "aws-linux"
+        us-west-2 = "us-west-2"
     }
 }
 
@@ -22,7 +22,7 @@ variable "key_path" {
     default = {
         us-east-1 = "/home/vagrant/aws/us-east-1.pem"
         us-west-1 = "/home/vagrant/aws/us-west-1.pem"
-        us-west-2 = "/home/vagrant/aws/aws-linux.pem"
+        us-west-2 = "/home/vagrant/aws/us-west-2.pem"
     }
 }
 
