@@ -111,7 +111,7 @@ resource "aws_instance" "docker" {
 
 resource "aws_elb" "load-balancer" {
     name = "load-balancer"
-    availability_zones = ["${lookup(var.elb_zones, var.aws_region)}"]
+    subnets = ["${aws_instance.docker.subnet_id}"] 
 
     listener {
         instance_port = 80

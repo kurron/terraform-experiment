@@ -36,11 +36,3 @@ variable "aws_amis" {
     }
 }
 
-variable "elb_zones" {
-    description = "Availability Zones that the load balancer should watch."
-    default = {
-        us-east-1 = "us-east-1a" 
-        us-west-1 = "us-west-1a" 
-        us-west-2 = "us-west-2a"
-    }
-}
