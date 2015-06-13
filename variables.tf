@@ -28,6 +28,7 @@ variable "instance_type" {
 
 # Ubuntu Server 14.04 LTS (HVM), SSD Volume Type, 64-bit 
 variable "aws_amis" {
+    description = "AMI to build the instance from."
     default = {
         us-east-1 = "ami-5189a661"
         us-west-1 = "ami-5189a661"
