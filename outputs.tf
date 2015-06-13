@@ -95,3 +95,11 @@ output "website_endpoint" {
   value = "${aws_s3_bucket.web-site.website_endpoint}"
 }
 
+output "sqs_id" {
+  value = "${aws_sqs_queue.example_queue.id}"
+}
+
+output "sqs_arn" {
+  value = "${aws_sqs_queue.example_queue.arn}"
+}
+

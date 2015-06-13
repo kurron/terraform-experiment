@@ -23,6 +23,10 @@ resource "aws_s3_bucket" "web-site" {
     }
 }
 
+resource "aws_sqs_queue" "example_queue" {
+    name = "example-queue"
+}
+
 resource "aws_security_group" "composable" {
     name = "composable"
     description = "Firewall rules to allow provisioning and application deployment"
