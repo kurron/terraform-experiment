@@ -112,3 +112,71 @@ output "sns_arn" {
   value = "${aws_sns_topic.example_topic.arn}"
 }
 
+output "mysql_id" {
+  value = "${aws_db_instance.mysql.id}"
+}
+
+output "mysql_address" {
+  value = "${aws_db_instance.mysql.address}"
+}
+
+output "mysql_storage" {
+  value = "${aws_db_instance.mysql.allocated_storage}"
+}
+
+output "mysql_az" {
+  value = "${aws_db_instance.mysql.availability_zone}"
+}
+
+output "mysql_backup_retention_period" {
+  value = "${aws_db_instance.mysql.backup_retention_period}"
+}
+
+output "mysql_backup_window" {
+  value = "${aws_db_instance.mysql.backup_window}"
+}
+
+output "mysql_endpoint" {
+  value = "${aws_db_instance.mysql.endpoint}"
+}
+
+output "mysql_engine" {
+  value = "${aws_db_instance.mysql.engine}"
+}
+
+output "mysql_engine_version" {
+  value = "${aws_db_instance.mysql.engine_version}"
+}
+
+output "mysql_instance_class" {
+  value = "${aws_db_instance.mysql.instance_class}"
+}
+
+output "mysql_maintenance_windows" {
+  value = "${aws_db_instance.mysql.maintenance_window}"
+}
+
+output "mysql_multi_az" {
+  value = "${aws_db_instance.mysql.multi_az}"
+}
+
+output "mysql_name" {
+  value = "${aws_db_instance.mysql.name}"
+}
+
+output "mysql_port" {
+  value = "${aws_db_instance.mysql.port}"
+}
+
+output "mysql_status" {
+  value = "${aws_db_instance.mysql.status}"
+}
+
+output "mysql_username" {
+  value = "${aws_db_instance.mysql.username}"
+}
+
+output "mysql_storage_encrypted" {
+  value = "${aws_db_instance.mysql.storage_encrypted}"
+}
+

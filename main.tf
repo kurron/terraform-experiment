@@ -31,6 +31,22 @@ resource "aws_sns_topic" "example_topic" {
     name = "example-topic"
 }
 
+resource "aws_db_instance" "mysql" {
+    identifier = "mysql"
+    allocated_storage = 20
+    engine = "mysql"
+    engine_version = "5.6.23"
+    instance_class = "db.t2.micro"
+    storage_type = "gp2"
+    username = "terraform"
+    password = "terraform"
+    publicly_accessible = true
+    tags {
+        realm = "experimental"
+        created-by = "Terraform"
+    }
+}
+
 resource "aws_security_group" "composable" {
     name = "composable"
     description = "Firewall rules to allow provisioning and application deployment"
