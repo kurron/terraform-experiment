@@ -47,9 +47,35 @@ resource "aws_db_instance" "mysql" {
     }
 }
 
-resource "aws_security_group" "composable" {
-    name = "composable"
+resource "aws_security_group" "web-access" {
+    name = "web-access"
     description = "Firewall rules to allow provisioning and application deployment"
+
+    tags {
+        realm = "experimental"
+        created-by = "Terraform"
+        direction = "bi-dierectional"
+        purpose = "application"
+    }
+}
+
+resource "aws_security_group" "elb" {
+    name = "elb"
+    description = "Firewall rules for the load balancer"
+
+    ingress {
+      from_port = 80
+      to_port = 80
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    egress {
+      from_port = 0
+      to_port = 65535
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
 
     tags {
         realm = "experimental"
@@ -66,7 +92,7 @@ resource "aws_security_group_rule" "inbound-ssh" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
 
-    security_group_id = "${aws_security_group.composable.id}"
+    security_group_id = "${aws_security_group.web-access.id}"
 }
 
 resource "aws_security_group_rule" "inbound-docker" {
@@ -76,7 +102,7 @@ resource "aws_security_group_rule" "inbound-docker" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
 
-    security_group_id = "${aws_security_group.composable.id}"
+    security_group_id = "${aws_security_group.web-access.id}"
 }
 
 resource "aws_security_group_rule" "inbound-http" {
@@ -86,7 +112,7 @@ resource "aws_security_group_rule" "inbound-http" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
 
-    security_group_id = "${aws_security_group.composable.id}"
+    security_group_id = "${aws_security_group.web-access.id}"
 }
 
 resource "aws_security_group_rule" "inbound-https" {
@@ -96,7 +122,7 @@ resource "aws_security_group_rule" "inbound-https" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
 
-    security_group_id = "${aws_security_group.composable.id}"
+    security_group_id = "${aws_security_group.web-access.id}"
 }
 
 resource "aws_security_group_rule" "allow-all-outbound" {
@@ -106,7 +132,7 @@ resource "aws_security_group_rule" "allow-all-outbound" {
     protocol = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
 
-    security_group_id = "${aws_security_group.composable.id}"
+    security_group_id = "${aws_security_group.web-access.id}"
 }
 
 resource "aws_instance" "docker" {
@@ -120,7 +146,7 @@ resource "aws_instance" "docker" {
     ami = "${lookup(var.aws_amis, var.aws_region)}"
     instance_type = "${var.instance_type}"
     key_name = "${lookup(var.key_name, var.aws_region)}"
-    security_groups = ["${aws_security_group.composable.name}"]
+    security_groups = ["${aws_security_group.web-access.name}"]
 
     tags {
         realm = "experimental"
@@ -180,6 +206,7 @@ resource "aws_elb" "load-balancer" {
     }
 
     instances = ["${aws_instance.docker.*.id}"]
+    security_groups = ["${aws_security_group.elb.id}"]
     cross_zone_load_balancing = true
     idle_timeout = 400
     connection_draining = true
