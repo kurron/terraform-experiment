@@ -8,6 +8,11 @@ variable "instance_type" {
     default = "t2.micro"
 }
 
+variable "docker_instance_count" {
+    description = "How many Docker instances to spin up."
+    default = 2 
+}
+
 variable "key_name" {
     description = "Name of the SSH keypair to use in AWS."
     default = {

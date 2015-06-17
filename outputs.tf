@@ -1,58 +1,30 @@
 
-output "docker1_id" {
-  value = "${aws_instance.docker1.id}"
+output "docker_id" {
+  value = "${aws_instance.docker.id}"
 }
 
-output "docker1_az" {
-  value = "${aws_instance.docker1.availability_zone}"
+output "docker_az" {
+  value = "${aws_instance.docker.availability_zone}"
 }
 
-output "docker1_key" {
-  value = "${aws_instance.docker1.key_name}"
+output "docker_key" {
+  value = "${aws_instance.docker.key_name}"
 }
 
-output "docker1_private_ip" {
-  value = "${aws_instance.docker1.private_ip}"
+output "docker_private_ip" {
+  value = "${aws_instance.docker.private_ip}"
 }
 
-output "docker1_public_dns" {
-  value = "${aws_instance.docker1.public_dns}"
+output "docker_public_dns" {
+  value = "${aws_instance.docker.public_dns}"
 }
 
-output "docker1_public_ip" {
-  value = "${aws_instance.docker1.public_ip}"
+output "docker_public_ip" {
+  value = "${aws_instance.docker.public_ip}"
 }
 
-output "docker1_subnet_id" {
-  value = "${aws_instance.docker1.subnet_id}"
-}
-
-output "docker2_id" {
-  value = "${aws_instance.docker2.id}"
-}
-
-output "docker2_az" {
-  value = "${aws_instance.docker2.availability_zone}"
-}
-
-output "docker2_key" {
-  value = "${aws_instance.docker2.key_name}"
-}
-
-output "docker2_private_ip" {
-  value = "${aws_instance.docker2.private_ip}"
-}
-
-output "docker2_public_dns" {
-  value = "${aws_instance.docker2.public_dns}"
-}
-
-output "docker2_public_ip" {
-  value = "${aws_instance.docker2.public_ip}"
-}
-
-output "docker2_subnet_id" {
-  value = "${aws_instance.docker2.subnet_id}"
+output "docker_subnet_id" {
+  value = "${aws_instance.docker.subnet_id}"
 }
 
 output "elb_id" {
@@ -179,4 +151,8 @@ output "mysql_username" {
 output "mysql_storage_encrypted" {
   value = "${aws_db_instance.mysql.storage_encrypted}"
 }
+
+#output "nginx_image" {
+# value = "${docker_image.nginx.latest}"
+#}
 

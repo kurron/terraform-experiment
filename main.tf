@@ -109,87 +109,55 @@ resource "aws_security_group_rule" "allow-all-outbound" {
     security_group_id = "${aws_security_group.composable.id}"
 }
 
-resource "aws_instance" "docker1" {
+resource "aws_instance" "docker" {
     connection {
         user = "ubuntu"
         key_file = "${lookup(var.key_path, var.aws_region)}"
     }
 
+    count = "${var.docker_instance_count}"
+#   count = 1 
     ami = "${lookup(var.aws_amis, var.aws_region)}"
-
-#   availability_zone = "optional"
-#   placement_group = "optional"
-#   ebs_optimized = true 
-#   disable_api_termination = false 
-
     instance_type = "${var.instance_type}"
     key_name = "${lookup(var.key_name, var.aws_region)}"
     security_groups = ["${aws_security_group.composable.name}"]
 
-#   vpc_security_group_ids = []
-#   subnet_id = "optional" 
-#   associate_public_ip_address = true 
-#   private_ip = "192.168.1.2" 
-#   source_dest_check = true 
-#   user_data = "optional" 
-#   iam_instance_profile = "optional" 
     tags {
         realm = "experimental"
         purpose = "docker-container"
         created-by = "Terraform"
     }
-#   root_block_device = "optional" 
-#   ebs_block_device = "optional" 
-#   ephemeral_block_device = "optional" 
 
     # run Ansible to provision the box
     provisioner "local-exec" {
-        command = "./provision-instance.sh ${aws_instance.docker1.public_ip} ${lookup(var.key_path, var.aws_region)}"
+        command = "./provision-instance.sh ${self.public_ip} ${lookup(var.key_path, var.aws_region)}"
     }
 }
 
-resource "aws_instance" "docker2" {
-    connection {
-        user = "ubuntu"
-        key_file = "${lookup(var.key_path, var.aws_region)}"
-    }
+#provider "docker" {
+#   host = "tcp://${aws_instance.docker.public_ip}:2375/"
+#   depends_on = ["aws_instance.docker"]
+#}
 
-    ami = "${lookup(var.aws_amis, var.aws_region)}"
+#resource "docker_image" "nginx" {
+#   image = "nginx"
+#   keep_updated = true
+#}
 
-#   availability_zone = "optional"
-#   placement_group = "optional"
-#   ebs_optimized = true 
-#   disable_api_termination = false 
-
-    instance_type = "${var.instance_type}"
-    key_name = "${lookup(var.key_name, var.aws_region)}"
-    security_groups = ["${aws_security_group.composable.name}"]
-
-#   vpc_security_group_ids = []
-#   subnet_id = "optional" 
-#   associate_public_ip_address = true 
-#   private_ip = "192.168.1.2" 
-#   source_dest_check = true 
-#   user_data = "optional" 
-#   iam_instance_profile = "optional" 
-    tags {
-        realm = "experimental"
-        purpose = "docker-container"
-        created-by = "Terraform"
-    }
-#   root_block_device = "optional" 
-#   ebs_block_device = "optional" 
-#   ephemeral_block_device = "optional" 
-
-    # run Ansible to provision the box
-    provisioner "local-exec" {
-        command = "./provision-instance.sh ${aws_instance.docker2.public_ip} ${lookup(var.key_path, var.aws_region)}"
-    }
-}
+#resource "docker_container" "nginx" {
+#   image = "${docker_image.nginx.latest}"
+#   name = "nginx"
+#   hostname = "nginx"
+#   must_run = true
+#   ports {
+#       internal = 80
+#       external = 80
+#   }
+#}
 
 resource "aws_elb" "load-balancer" {
     name = "load-balancer"
-    availability_zones = ["${aws_instance.docker1.availability_zone}","${aws_instance.docker2.availability_zone}"] 
+    availability_zones = ["${aws_instance.docker.*.availability_zone}"] 
 
     listener {
         instance_port = 80
@@ -211,7 +179,7 @@ resource "aws_elb" "load-balancer" {
         created-by = "Terraform"
     }
 
-    instances = ["${aws_instance.docker1.id}","${aws_instance.docker2.id}"]
+    instances = ["${aws_instance.docker.*.id}"]
     cross_zone_load_balancing = true
     idle_timeout = 400
     connection_draining = true
